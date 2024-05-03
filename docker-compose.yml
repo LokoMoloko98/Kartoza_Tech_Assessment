@@ -1,12 +1,33 @@
 version: '3.8'
 services:
-  streamlit-app:
+  reverse-proxy:
+    # The official v3 Traefik docker image
+    image: traefik:v3.0
+    container_name: "traefik"
+    command: 
+      - "--log.level=DEBUG"
+      - "--api=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=communication@moloko-mokubedi.co.za"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  tsm-browser-app:
     build: .
     ports:
       - "8501:8501"
-    volumes:
-      - .:/app
-      - ./data:/app/data
-    networks:
-      - iris_backend
-    command: streamlit run dashboard.py --server.port 8501 --server.address 0.0.0.0 --server.enableCORS false --server.enableWebsocketCompression=false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tsm-browser-app.rule=Host(`localhost`)"
+      - "traefik.http.routers.tsm-browser-app.entrypoints=websecure"
+      - "traefik.http.routers.tsm-browser-app.tls.certresolver=myresolver"
