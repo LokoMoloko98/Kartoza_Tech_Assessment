@@ -1,31 +1,19 @@
-# Use the latest version of the Amazon Linux base image
-FROM ubuntu:mantic
+#Use an official Python runtime as a parent image
+FROM python:3.11
 
-# Update all installed packages to thier latest versions
-RUN apt-get update
+# Set the working directory in the container
+WORKDIR /app
 
-# Install the unzip package, which we will use it to extract the web files from the zip folder
-RUN apt-get install nginx -y
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-# Change directory to the html directory
-WORKDIR /var/www/html
+# Install any needed packages specified in requirements.txt
+RUN pip install -r requirements.txt
 
-# Install Git
-RUN apt-get install -y git 
+CMD geojson-to-sqlite CT-TSMs.db town_survey_marks Town_Survey_Marks_1000.geojson 
 
-ENV CONTAINER_IP=$CONTAINER_IP
+# Make port 8501 available to the world outside this container
+EXPOSE 8501
 
-# Copy the web files into the HTML directory
-COPY index.html /var/www/html
-COPY script.js /var/www/html
-COPY style.css /var/www/html
-COPY images/'Moloko_logo.png' /var/www/html
-
-#Replace line 58 with correct line
-RUN sed -i '57i <p class="p404" data-depth="0.50">The container is successfully deployed.</p>' /var/www/html/index.html
-
-# Expose the default Nginx ports
-EXPOSE 80
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Run app.py when the container launches
+CMD ["streamlit", "run", "dashboard.py"]
