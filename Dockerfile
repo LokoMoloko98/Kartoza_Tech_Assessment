@@ -1,5 +1,5 @@
 # Use the latest version of the Amazon Linux base image
-FROM ubuntu
+FROM ubuntu:mantic
 
 # Update all installed packages to thier latest versions
 RUN apt-get update
