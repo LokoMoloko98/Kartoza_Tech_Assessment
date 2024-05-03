@@ -28,6 +28,6 @@ services:
       - "8501:8501"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tsm-browser-app.rule=Host(`ktc.armada247.com`)"
+      - "traefik.http.routers.tsm-browser-app.rule=Host(`localhost`)"
       - "traefik.http.routers.tsm-browser-app.entrypoints=websecure"
       - "traefik.http.routers.tsm-browser-app.tls.certresolver=myresolver"
