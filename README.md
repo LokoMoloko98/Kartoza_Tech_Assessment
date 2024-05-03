@@ -1,3 +1,4 @@
-# Cloud Infrastructure Testing Nginx Docker Container
+# Kartoza Technical Assessment 
 
-A simple web page hosted via the NGINX web server container. The purpose of this container is for testing cloud infrastructure architectural designs. 
+Moloko Mokubeds's Kartoza technical assessment submission. 
+The submission demonstrates a simple orchestration of a simple Town Survey Mark (TSM) Browser Web App using Docker-Compose, Traefik and possibly Terraform.

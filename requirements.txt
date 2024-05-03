@@ -1,0 +1,9 @@
+folium
+streamlit
+geopandas
+pandas
+matplotlib
+plotly
+numpy
+geojson-to-sqlite
+streamlit-folium
