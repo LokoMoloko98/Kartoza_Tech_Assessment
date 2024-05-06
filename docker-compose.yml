@@ -7,7 +7,7 @@ services:
     command: 
       - "--log.level=DEBUG"
       - "--api=true"
-      - "--api.insecure=true"
+      - "--api.insecure=false"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entryPoints.websecure.address=:443"
